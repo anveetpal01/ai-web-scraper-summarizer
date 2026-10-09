@@ -2,8 +2,8 @@
 
 A full-stack app: paste a web page URL, a Python backend scrapes the page's main text, and the Google Gemini API turns it into a short summary with key points.
 
-**Live demo:** _add your deployed frontend URL here_
-**Backend API:** _add your deployed backend URL here_ (interactive docs at `/docs`)
+- **Live demo:** https://ai-web-scraper-summarizer-34ap.vercel.app
+- **Backend API:** https://ai-web-scraper-summarizer.vercel.app (interactive docs: https://ai-web-scraper-summarizer.vercel.app/docs)
 
 ## Features
 
@@ -18,14 +18,14 @@ A full-stack app: paste a web page URL, a Python backend scrapes the page's main
 
 ## Tech stack
 
-| Part | Technology |
-| --- | --- |
-| Frontend | Next.js 16 (React 19, TypeScript), plain CSS |
-| Backend | Python, FastAPI, Uvicorn |
-| Scraping | httpx (async HTTP client) + BeautifulSoup 4 with the lxml parser |
-| AI | Google Gemini API via the official `google-genai` SDK (`gemini-3.5-flash-lite` by default, free tier) |
-| Tests | pytest |
-| Hosting | Vercel (frontend and backend as two projects) |
+| Part     | Technology                                                                                            |
+| -------- | ----------------------------------------------------------------------------------------------------- |
+| Frontend | Next.js 16 (React 19, TypeScript), plain CSS                                                          |
+| Backend  | Python, FastAPI, Uvicorn                                                                              |
+| Scraping | httpx (async HTTP client) + BeautifulSoup 4 with the lxml parser                                      |
+| AI       | Google Gemini API via the official `google-genai` SDK (`gemini-3.5-flash-lite` by default, free tier) |
+| Tests    | pytest                                                                                                |
+| Hosting  | Vercel (frontend and backend as two projects)                                                         |
 
 ## How it works
 
@@ -227,14 +227,14 @@ The tests cover URL validation, private-address blocking, text extraction and th
 { "error": "The website responded with HTTP 404." }
 ```
 
-| Status | When |
-| --- | --- |
-| 400 | Missing or invalid URL, unsupported scheme, unknown domain, private/local address |
-| 415 | The URL is not a web page (PDF, image, etc.) |
-| 422 | Not enough readable text on the page (empty, login wall, JavaScript-only) |
-| 429 | Gemini free-tier rate limit reached |
-| 500 | `GEMINI_API_KEY` missing or invalid |
-| 502 / 503 / 504 | The website or the AI service failed or timed out |
+| Status          | When                                                                              |
+| --------------- | --------------------------------------------------------------------------------- |
+| 400             | Missing or invalid URL, unsupported scheme, unknown domain, private/local address |
+| 415             | The URL is not a web page (PDF, image, etc.)                                      |
+| 422             | Not enough readable text on the page (empty, login wall, JavaScript-only)         |
+| 429             | Gemini free-tier rate limit reached                                               |
+| 500             | `GEMINI_API_KEY` missing or invalid                                               |
+| 502 / 503 / 504 | The website or the AI service failed or timed out                                 |
 
 ### `GET /api/health`
 
@@ -274,12 +274,12 @@ The backend can also run on any Python host such as Render or Railway with the s
 
 ## Troubleshooting
 
-| Problem | Fix |
-| --- | --- |
-| "Couldn't reach the backend at http://localhost:8000" | Start the backend (`uvicorn app.main:app --reload --port 8000`) in the `backend` folder |
-| "The server is missing GEMINI_API_KEY" | Create `backend/.env` with your key and restart the backend |
-| "Gemini rejected the API key" | Copy the key again from AI Studio, with no quotes or spaces around it |
-| "The Gemini model ... wasn't found" | Remove `GEMINI_MODEL` from `backend/.env` to use the default, or pick a model from the [Gemini docs](https://ai.google.dev/gemini-api/docs/models) |
-| CORS error in the browser console | Add the frontend's URL to `CORS_ORIGINS` in the backend's environment and restart/redeploy it |
-| PowerShell won't run `Activate.ps1` | Run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, or use Command Prompt |
-| "The website responded with HTTP 403" | The site blocks scrapers. Try a different page |
+| Problem                                               | Fix                                                                                                                                               |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Couldn't reach the backend at http://localhost:8000" | Start the backend (`uvicorn app.main:app --reload --port 8000`) in the `backend` folder                                                           |
+| "The server is missing GEMINI_API_KEY"                | Create`backend/.env` with your key and restart the backend                                                                                        |
+| "Gemini rejected the API key"                         | Copy the key again from AI Studio, with no quotes or spaces around it                                                                             |
+| "The Gemini model ... wasn't found"                   | Remove`GEMINI_MODEL` from `backend/.env` to use the default, or pick a model from the [Gemini docs](https://ai.google.dev/gemini-api/docs/models) |
+| CORS error in the browser console                     | Add the frontend's URL to`CORS_ORIGINS` in the backend's environment and restart/redeploy it                                                      |
+| PowerShell won't run`Activate.ps1`                    | Run`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, or use Command Prompt                                                              |
+| "The website responded with HTTP 403"                 | The site blocks scrapers. Try a different page                                                                                                    |
