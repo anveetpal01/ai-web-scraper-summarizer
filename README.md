@@ -1,20 +1,16 @@
 # AI Web Scraper & Summarizer
 
-A full-stack app: paste a web page URL, a Python backend scrapes the page's main text, and the Google Gemini API turns it into a short summary with key points.
+A web app that turns any web page URL into a short AI-generated summary with key points.
 
 - **Live demo:** https://ai-web-scraper-summarizer-34ap.vercel.app
-- **Backend API:** https://ai-web-scraper-summarizer.vercel.app (interactive docs: https://ai-web-scraper-summarizer.vercel.app/docs)
 
-## Features
+## Feature(s)
 
-- Simple UI with a URL input, a **Summarize** button and a **Loading...** state while the backend works
-- FastAPI backend with a `POST /api/summarize` endpoint and auto-generated API docs (Swagger UI at `/docs`)
-- Main-content extraction with BeautifulSoup: strips scripts, styles, navigation, headers, footers and sidebars, and prefers the page's `<article>` / `<main>` element
-- AI summary (2-4 sentences) plus 3-5 key points from Gemini's free tier, returned as structured JSON
+- Simple UI where user gives an URL of any website, hit a **Summarize** button and gets summary of that website
+- AI summary (2-4 sentences) plus 3-5 key points, returned in structured format.
 - Clear error messages for bad URLs, unreachable sites, 404s, non-HTML files (PDFs, images), timeouts and AI quota limits
 - Basic SSRF protection: requests to `localhost`, private IP ranges and cloud metadata addresses are blocked, including through redirects
-- Unit and API tests with pytest
-- Works on mobile, supports light and dark mode
+- Responsive on mobile, and follows the system light/dark theme automatically
 
 ## Tech stack
 
@@ -232,47 +228,3 @@ The tests cover URL validation, private-address blocking, text extraction and th
 ### `GET /api/health`
 
 Returns `{ "status": "ok" }`.
-
-## Deploying to Vercel
-
-The frontend and backend are deployed as **two Vercel projects from the same repository**. Vercel supports FastAPI natively and detects the `app` object in `backend/app/main.py`.
-
-**1. Deploy the backend**
-
-1. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
-2. Set **Root Directory** to `backend`. Vercel detects FastAPI.
-3. Under **Environment Variables**, add `GEMINI_API_KEY`.
-4. Deploy. You'll get a URL like `https://your-backend.vercel.app`. Open `/api/health` on it to check it works.
-
-**2. Deploy the frontend**
-
-1. Import the same repository again as a new project.
-2. Set **Root Directory** to `frontend`. Vercel detects Next.js.
-3. Add the environment variable `NEXT_PUBLIC_API_URL` = your backend URL (no trailing slash).
-4. Deploy. You'll get a URL like `https://your-frontend.vercel.app`.
-
-**3. Allow the frontend in the backend's CORS settings**
-
-1. In the backend project, add the environment variable `CORS_ORIGINS` = your frontend URL (for example `https://your-frontend.vercel.app`).
-2. Redeploy the backend (**Deployments** tab, then **Redeploy** on the latest deployment) so the change takes effect.
-
-The backend can also run on any Python host such as Render or Railway with the start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-
-## Limitations
-
-- Only static HTML is scraped. Pages that render their content with JavaScript (many single-page apps) may return little or no text.
-- Some sites block automated requests (Cloudflare challenges, logins, paywalls). Those will show an error instead of a summary.
-- Very long pages are trimmed to the first ~24,000 characters before summarizing.
-- The Gemini free tier has per-minute and per-day request limits. If you hit them, wait a minute and try again.
-
-## Troubleshooting
-
-| Problem                                               | Fix                                                                                                                                               |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "Couldn't reach the backend at http://localhost:8000" | Start the backend (`uvicorn app.main:app --reload --port 8000`) in the `backend` folder                                                           |
-| "The server is missing GEMINI_API_KEY"                | Create`backend/.env` with your key and restart the backend                                                                                        |
-| "Gemini rejected the API key"                         | Copy the key again from AI Studio, with no quotes or spaces around it                                                                             |
-| "The Gemini model ... wasn't found"                   | Remove`GEMINI_MODEL` from `backend/.env` to use the default, or pick a model from the [Gemini docs](https://ai.google.dev/gemini-api/docs/models) |
-| CORS error in the browser console                     | Add the frontend's URL to`CORS_ORIGINS` in the backend's environment and restart/redeploy it                                                      |
-| PowerShell won't run`Activate.ps1`                    | Run`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, or use Command Prompt                                                              |
-| "The website responded with HTTP 403"                 | The site blocks scrapers. Try a different page                                                                                                    |
