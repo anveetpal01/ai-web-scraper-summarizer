@@ -181,7 +181,7 @@ function ResultCard({ data }: { data: SummarizeResponse }) {
       <div className="result-footer">
         <span className="muted">
           {data.wordCount.toLocaleString()} words scraped
-          {data.truncated && " · long page, the first part was used"}
+          {data.truncated && " (long page, only the first part was used)"}
         </span>
         <div className="actions">
           <button type="button" className="btn btn-ghost" onClick={copySummary}>

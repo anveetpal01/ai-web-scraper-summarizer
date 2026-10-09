@@ -54,7 +54,7 @@ BLOCK_TAGS = [
 
 # Placeholder for block boundaries, so line breaks that only exist in the HTML
 # source can be collapsed without gluing paragraphs together.
-BLOCK_BREAK = ""
+BLOCK_BREAK = "\ue000"
 
 
 @dataclass

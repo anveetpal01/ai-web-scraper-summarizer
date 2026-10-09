@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "PageGist · Summarize any web page",
+  title: "PageGist - Summarize any web page",
   description: "Paste a link to any article or web page and get a short summary with the key points.",
 };
 

@@ -24,7 +24,7 @@ SYSTEM_PROMPT = """You summarize web pages for busy readers.
 - "summary": 2 to 4 plain sentences describing what the page is about and its main takeaway.
 - "key_points": 3 to 5 short, specific points (one sentence each, no leading bullets or numbering). Use fewer if the page is very short."""
 
-_BULLET_PREFIX = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s*")
+_BULLET_PREFIX = re.compile(r"^\s*(?:[-*\u2022]|\d+[.)])\s*")
 
 
 class PageSummary(BaseModel):
